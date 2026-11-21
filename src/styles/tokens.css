@@ -1,0 +1,141 @@
+:root {
+  color-scheme: light;
+
+  /* ---------- Modern Healthcare Brand Palette ---------- */
+  --color-primary: #0f766e;          /* Rich medical teal (teal-700) */
+  --color-primary-hover: #0d655f;    /* Deeper teal on hover */
+  --color-primary-active: #094e4a;   /* Pressed */
+  --color-primary-light: #14b8a6;    /* Vibrant teal accent (teal-500) */
+  --color-on-primary: #ffffff;
+  --color-primary-soft: #f0fdfa;     /* Soft mint/teal wash (teal-50) */
+  --color-primary-soft-border: #ccfbf1;
+  --color-primary-soft-text: #0f766e;
+
+  /* ---------- Deep Navy & Slate Accents ---------- */
+  --color-navy: #0f172a;             /* Slate 900 */
+  --color-navy-muted: #1e293b;       /* Slate 800 */
+  --color-navy-soft: #f8fafc;        /* Slate 50 */
+  --color-blue-accent: #2563eb;      /* Blue 600 */
+  --color-blue-soft: #eff6ff;        /* Blue 50 */
+
+  /* ---------- Surfaces and text ---------- */
+  --color-bg: #f8fafc;               /* Crisp, bright slate-50 background */
+  --color-surface: #ffffff;          /* Pure white card surface */
+  --color-surface-alt: #f1f5f9;      /* Subtle slate-100 alternate surface */
+  --color-surface-raised: #ffffff;
+  --color-text: #0f172a;             /* High-contrast crisp text */
+  --color-text-muted: #475569;       /* Slate 600 for descriptions */
+  --color-text-subtle: #94a3b8;      /* Slate 400 for hints/timestamps */
+  --color-text-inverse: #ffffff;
+
+  /* ---------- Hairline Borders ---------- */
+  --color-border: #e2e8f0;           /* Soft slate-200 border */
+  --color-border-subtle: #f1f5f9;    /* Ultra-light divider */
+  --color-border-control: #94a3b8;   /* Form controls */
+
+  /* ---------- Focus ---------- */
+  --color-focus: #0f766e;
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+
+  /* ---------- Solid action colors ---------- */
+  --color-success-solid: #059669;    /* Emerald 600 */
+  --color-success-hover: #047857;
+  --color-success-bg: #ecfdf5;       /* Emerald 50 */
+  --color-success-text: #065f46;     /* Emerald 800 */
+
+  --color-danger: #e11d48;           /* Rose 600 */
+  --color-danger-bg: #fff1f2;        /* Rose 50 */
+  --color-danger-solid: #e11d48;
+  --color-danger-hover: #be123c;
+  --color-danger-text: #9f1239;
+
+  --color-warning: #d97706;          /* Amber 600 */
+  --color-warning-bg: #fffbeb;       /* Amber 50 */
+  --color-warning-text: #92400e;     /* Amber 800 */
+
+  /* ---------- Disabled ---------- */
+  --color-disabled-bg: #f1f5f9;
+  --color-disabled-text: #94a3b8;
+  --color-disabled-border: #e2e8f0;
+
+  /* ---------- Dose status pairs ---------- */
+  --status-pending-fg: #1d4ed8;
+  --status-pending-bg: #eff6ff;
+  --status-pending-border: #bfdbfe;
+
+  --status-taken-fg: #047857;
+  --status-taken-bg: #ecfdf5;
+  --status-taken-border: #a7f3d0;
+
+  --status-snoozed-fg: #6d28d9;
+  --status-snoozed-bg: #f5f3ff;
+  --status-snoozed-border: #ddd6fe;
+
+  --status-missed-fg: #b45309;      /* "Not confirmed" */
+  --status-missed-bg: #fffbeb;
+  --status-missed-border: #fde68a;
+
+  --status-skipped-fg: #475569;
+  --status-skipped-bg: #f1f5f9;
+  --status-skipped-border: #e2e8f0;
+
+  /* ---------- Charts / rings ---------- */
+  --color-ring-track: #e2e8f0;
+
+  /* ---------- Spacing ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* ---------- Radius ---------- */
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+  --radius-pill: 999px;
+
+  /* ---------- Subtle Modern SaaS Shadows ---------- */
+  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 8px -2px rgba(15, 23, 42, 0.03);
+  --shadow-glow: 0 0 25px rgba(15, 118, 110, 0.12);
+
+  /* ---------- Typography ---------- */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --fs-xs: 0.8125rem;   /* 13px */
+  --fs-sm: 0.9375rem;   /* 15px */
+  --fs-body: 1.0625rem; /* 17px */
+  --fs-lg: 1.1875rem;   /* 19px */
+  --fs-xl: 1.375rem;    /* 22px */
+  --fs-2xl: 1.75rem;    /* 28px */
+  --fs-3xl: 2.25rem;    /* 36px */
+  --fs-4xl: 3rem;       /* 48px */
+  --lh-body: 1.6;
+  --lh-heading: 1.25;
+
+  /* ---------- Sizing ---------- */
+  --touch-min: 3.25rem;    /* 52px */
+  --touch-large: 4.5rem;   /* 72px: accessible dose actions */
+  --bottom-nav-h: 4.5rem;
+  --sidebar-w: 18rem;
+  --content-max: 56rem;
+  --content-max-wide: 76rem;
+
+  /* ---------- Layers ---------- */
+  --z-nav: 20;
+  --z-modal: 100;
+
+  /* ---------- Motion ---------- */
+  --transition-fast: 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}

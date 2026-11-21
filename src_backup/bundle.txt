@@ -1,0 +1,1982 @@
+#### FILE: src/App.jsx
+import { BrowserRouter } from 'react-router-dom';
+import DesignPreview from './pages/DesignPreview';
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <DesignPreview />
+    </BrowserRouter>
+  );
+}
+
+#### FILE: src/index.css
+@import './styles/tokens.css';
+@import './styles/components.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  color: var(--color-text);
+  font-weight: 800;
+  line-height: var(--lh-heading);
+}
+
+h1 { font-size: var(--fs-2xl); }
+h2 { font-size: var(--fs-xl); }
+h3 { font-size: var(--fs-lg); }
+
+p {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: var(--color-primary);
+  text-underline-offset: 3px;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+#### FILE: src/styles/tokens.css
+:root {
+  color-scheme: light;
+
+  /* ---------- Brand ---------- */
+  --color-primary: #0b5c6b;
+  --color-primary-hover: #08495a;
+  --color-primary-active: #063a47;
+  --color-on-primary: #ffffff;
+  --color-primary-soft: #e0f1f4;
+  --color-primary-soft-text: #07424f;
+
+  /* ---------- Surfaces and text ---------- */
+  --color-bg: #f4f8fa;
+  --color-surface: #ffffff;
+  --color-surface-alt: #eaf1f4;
+  --color-text: #14212b;
+  --color-text-muted: #3d4b57;
+  --color-text-inverse: #ffffff;
+
+  /* ---------- Borders ---------- */
+  --color-border: #d3dee3;          /* decorative: cards, dividers */
+  --color-border-control: #5b6f7a;  /* form controls: 3:1+ against white */
+
+  /* ---------- Focus ---------- */
+  --color-focus: #0a4fd6;
+  --focus-ring-width: 4px;
+  --focus-ring-offset: 3px;
+
+  /* ---------- Solid action colors ---------- */
+  --color-success-solid: #17603b;
+  --color-success-solid-hover: #104a2d;
+  --color-success-solid-active: #0c3a23;
+  --color-danger: #8f1d1d;
+  --color-danger-bg: #fce4e4;
+  --color-danger-solid: #a32121;
+  --color-danger-solid-hover: #861a1a;
+  --color-danger-solid-active: #6e1515;
+
+  /* ---------- Disabled ---------- */
+  --color-disabled-bg: #dfe6ea;
+  --color-disabled-text: #55646e;
+  --color-disabled-border: #b9c5cc;
+
+  /* ---------- Dose status (text + background pairs) ---------- */
+  --status-pending-fg: #1d3f7a;
+  --status-pending-bg: #dce8fa;
+  --status-taken-fg: #0f5132;
+  --status-taken-bg: #d9f2e3;
+  --status-snoozed-fg: #4a2c7a;
+  --status-snoozed-bg: #eadffa;
+  --status-missed-fg: #6e3600;      /* shown to users as "Not confirmed" */
+  --status-missed-bg: #ffe9c7;
+  --status-skipped-fg: #3f4a55;
+  --status-skipped-bg: #e6eaee;
+
+  /* ---------- Charts / rings ---------- */
+  --color-ring-track: #cfdde3;
+
+  /* ---------- Spacing ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* ---------- Radius ---------- */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+
+  /* ---------- Shadows ---------- */
+  --shadow-sm: 0 1px 2px rgba(20, 33, 43, 0.08), 0 1px 3px rgba(20, 33, 43, 0.06);
+  --shadow-md: 0 4px 12px rgba(20, 33, 43, 0.12);
+  --shadow-lg: 0 12px 32px rgba(20, 33, 43, 0.2);
+
+  /* ---------- Typography ---------- */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans',
+    'Noto Sans Devanagari', 'Noto Sans Gurmukhi', Arial, sans-serif;
+  --fs-sm: 1rem;        /* 16px: smallest text allowed */
+  --fs-body: 1.125rem;  /* 18px */
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 1.875rem;
+  --fs-3xl: 2.5rem;
+  --lh-body: 1.6;       /* generous: Devanagari and Gurmukhi need it */
+  --lh-heading: 1.3;
+
+  /* ---------- Sizing ---------- */
+  --touch-min: 3.5rem;    /* 56px */
+  --touch-large: 4.5rem;  /* 72px: primary dose actions */
+  --bottom-nav-h: 4.75rem;
+  --sidebar-w: 17.5rem;
+  --content-max: 45rem;
+  --content-max-wide: 72rem;
+
+  /* ---------- Layers ---------- */
+  --z-nav: 20;
+  --z-modal: 100;
+
+  /* ---------- Motion ---------- */
+  --transition-fast: 150ms ease;
+}
+
+#### FILE: src/styles/components.css
+/* =========================================================
+   Utilities
+   ========================================================= */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap, var(--space-4));
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--row-gap, var(--space-3));
+}
+
+.page {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--space-5) var(--space-4);
+}
+
+.page--wide {
+  max-width: var(--content-max-wide);
+}
+
+.has-bottom-nav {
+  padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom, 0px) + var(--space-6));
+}
+
+@media (min-width: 1024px) {
+  .has-bottom-nav--mobile-only {
+    padding-bottom: var(--space-8);
+  }
+
+  .has-sidebar {
+    margin-left: var(--sidebar-w);
+  }
+}
+
+/* =========================================================
+   Icon
+   ========================================================= */
+.icon {
+  flex: none;
+}
+
+/* =========================================================
+   Button
+   ========================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: var(--touch-min);
+  padding: var(--space-2) var(--space-6);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--lg {
+  min-height: var(--touch-large);
+  padding: var(--space-3) var(--space-8);
+  border-radius: var(--radius-lg);
+  font-size: var(--fs-xl);
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.btn--primary:hover { background: var(--color-primary-hover); }
+.btn--primary:active { background: var(--color-primary-active); }
+
+.btn--success {
+  background: var(--color-success-solid);
+  color: #ffffff;
+}
+.btn--success:hover { background: var(--color-success-solid-hover); }
+.btn--success:active { background: var(--color-success-solid-active); }
+
+.btn--secondary {
+  background: var(--color-surface);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.btn--secondary:hover { background: var(--color-primary-soft); }
+
+.btn--danger {
+  background: var(--color-danger-solid);
+  color: #ffffff;
+}
+.btn--danger:hover { background: var(--color-danger-solid-hover); }
+.btn--danger:active { background: var(--color-danger-solid-active); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-primary);
+}
+.btn--ghost:hover { background: var(--color-primary-soft); }
+
+/* Must stay after the variants so disabled always wins */
+.btn:disabled,
+.btn:disabled:hover,
+.btn:disabled:active {
+  background: var(--color-disabled-bg);
+  border-color: var(--color-disabled-border);
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn--loading:disabled {
+  cursor: progress;
+}
+
+/* =========================================================
+   Card
+   ========================================================= */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.card--highlight {
+  border: 2px solid var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.card--warning {
+  background: var(--status-missed-bg);
+  border: 2px solid var(--status-missed-fg);
+  color: var(--status-missed-fg);
+}
+
+.card--warning .card__title {
+  color: inherit;
+}
+
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+/* =========================================================
+   Status chip
+   ========================================================= */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: 2px solid currentColor;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.chip--md { padding: 4px 14px; min-height: 2.25rem; }
+.chip--sm { padding: 2px 10px; }
+
+.chip--pending { color: var(--status-pending-fg); background: var(--status-pending-bg); }
+.chip--taken   { color: var(--status-taken-fg);   background: var(--status-taken-bg); }
+.chip--snoozed { color: var(--status-snoozed-fg); background: var(--status-snoozed-bg); }
+.chip--missed  { color: var(--status-missed-fg);  background: var(--status-missed-bg); }
+.chip--skipped { color: var(--status-skipped-fg); background: var(--status-skipped-bg); }
+
+/* =========================================================
+   Progress ring
+   ========================================================= */
+.ring {
+  position: relative;
+  display: inline-block;
+}
+
+.ring svg {
+  display: block;
+}
+
+.ring__track {
+  stroke: var(--color-ring-track);
+}
+
+.ring__value {
+  stroke: var(--color-primary);
+  transition: stroke-dashoffset 600ms ease;
+}
+
+.ring__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.ring__label {
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.ring__caption {
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+}
+
+/* =========================================================
+   Bottom navigation
+   ========================================================= */
+.bottom-nav {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: var(--z-nav);
+  background: var(--color-surface);
+  border-top: 2px solid var(--color-border);
+  box-shadow: 0 -2px 8px rgba(20, 33, 43, 0.08);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.bottom-nav__list {
+  display: flex;
+}
+
+.bottom-nav__item {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.bottom-nav__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: var(--bottom-nav-h);
+  padding: var(--space-2) var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+
+.bottom-nav__link.is-active {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-soft-text);
+}
+
+/* Active state is also shown by a bar, not color alone */
+.bottom-nav__link.is-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 4px;
+  border-radius: 0 0 4px 4px;
+  background: var(--color-primary);
+}
+
+@media (min-width: 1024px) {
+  .bottom-nav--mobile-only {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Sidebar (desktop only)
+   ========================================================= */
+.sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: var(--z-nav);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    width: var(--sidebar-w);
+    padding: var(--space-6) var(--space-4);
+    overflow-y: auto;
+    background: var(--color-surface);
+    border-right: 2px solid var(--color-border);
+  }
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-primary);
+  font-size: var(--fs-xl);
+  font-weight: 800;
+}
+
+.sidebar__nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--touch-min);
+  padding: var(--space-2) var(--space-4);
+  border-left: 6px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.sidebar__link:hover {
+  background: var(--color-surface-alt);
+}
+
+.sidebar__link.is-active {
+  background: var(--color-primary-soft);
+  border-left-color: var(--color-primary);
+  color: var(--color-primary-soft-text);
+}
+
+.sidebar__footer {
+  margin-top: auto;
+}
+
+/* =========================================================
+   Modal
+   ========================================================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: flex-end;       /* bottom sheet on phones: easier to reach */
+  justify-content: center;
+  background: rgba(10, 25, 35, 0.6);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 35rem;
+  max-height: 92vh;
+  max-height: 92dvh;
+  overflow-y: auto;
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal:focus {
+  outline: none;
+}
+
+.modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.modal__close {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  margin: calc(var(--space-2) * -1) calc(var(--space-2) * -1) 0 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.modal__close:hover {
+  background: var(--color-surface-alt);
+}
+
+.modal__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .modal-backdrop {
+    align-items: center;
+    padding: var(--space-4);
+  }
+
+  .modal {
+    border-radius: var(--radius-lg);
+  }
+
+  .modal__footer {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+/* =========================================================
+   Banner
+   ========================================================= */
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 2px solid currentColor;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-body);
+}
+
+.banner__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.banner__title {
+  font-weight: 800;
+}
+
+.banner__action {
+  margin-top: var(--space-2);
+}
+
+.banner__dismiss {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  margin: calc(var(--space-2) * -1) calc(var(--space-2) * -1) calc(var(--space-2) * -1) 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.banner__dismiss:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.banner--info    { color: var(--status-pending-fg); background: var(--status-pending-bg); }
+.banner--success { color: var(--status-taken-fg);   background: var(--status-taken-bg); }
+.banner--warning { color: var(--status-missed-fg);  background: var(--status-missed-bg); }
+.banner--error   { color: var(--color-danger);      background: var(--color-danger-bg); }
+
+/* Demo banner: dashed border so it is visually distinct from real notices */
+.banner--demo {
+  color: var(--status-snoozed-fg);
+  background: var(--status-snoozed-bg);
+  border-style: dashed;
+}
+
+/* =========================================================
+   Form field
+   ========================================================= */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.field__label {
+  color: var(--color-text);
+  font-size: var(--fs-body);
+  font-weight: 700;
+}
+
+.field__flag {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.field__hint {
+  color: var(--color-text-muted);
+  font-size: var(--fs-sm);
+}
+
+.field__control {
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border-control);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--fs-body);
+}
+
+textarea.field__control {
+  min-height: 7.5rem;
+  resize: vertical;
+}
+
+.field__control::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.8;
+}
+
+.field__control:focus-visible {
+  border-color: var(--color-focus);
+}
+
+.field__control[aria-invalid='true'] {
+  border-color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+.field__control:disabled {
+  background: var(--color-disabled-bg);
+  border-color: var(--color-disabled-border);
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+}
+
+.field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--color-danger);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.field__password {
+  position: relative;
+}
+
+.field__password .field__control {
+  padding-right: 6.5rem;
+}
+
+.field__toggle {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-primary);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.field__toggle:hover {
+  background: var(--color-primary-soft);
+}
+
+/* =========================================================
+   Empty state
+   ========================================================= */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+}
+
+.empty__icon {
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: var(--color-primary-soft);
+  color: var(--color-primary-soft-text);
+}
+
+.empty__desc {
+  max-width: 28rem;
+  color: var(--color-text-muted);
+}
+
+/* =========================================================
+   Spinner
+   ========================================================= */
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-primary);
+}
+
+.spinner__svg {
+  animation: spinner-rotate 0.9s linear infinite;
+}
+
+.spinner__label {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* With reduced motion the ring is static, so always show the text label */
+@media (prefers-reduced-motion: reduce) {
+  .spinner .visually-hidden {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    color: var(--color-text);
+    font-weight: 700;
+  }
+}
+
+#### FILE: src/i18n/en.js
+// All user-facing strings live here. Flat keys so translators can work line by line.
+// Use {name} placeholders for variables: t('key', { name: 'Asha' }).
+const en = {
+  'app.name': 'CareLoop',
+
+  // Common
+  'common.required': 'required',
+  'common.optional': 'optional',
+  'common.loading': 'Loading…',
+  'common.close': 'Close',
+  'common.dismiss': 'Dismiss',
+  'common.cancel': 'Cancel',
+  'common.save': 'Save',
+  'common.back': 'Back',
+  'common.retry': 'Try again',
+  'common.showPassword': 'Show',
+  'common.hidePassword': 'Hide',
+
+  // Accessibility
+  'a11y.progress': '{percent} percent',
+
+  // Dose status. "missed" is deliberately worded "Not confirmed":
+  // it must never imply the patient did not take the medicine.
+  'status.pending': 'Pending',
+  'status.taken': 'Taken',
+  'status.snoozed': 'Snoozed',
+  'status.missed': 'Not confirmed',
+  'status.skipped': 'Skipped',
+
+  // Navigation
+  'nav.main': 'Main navigation',
+  'nav.patient.home': 'Home',
+  'nav.patient.scan': 'Scan',
+  'nav.patient.medicines': 'Medicines',
+  'nav.caregiver.dashboard': 'Dashboard',
+  'nav.caregiver.alerts': 'Alerts',
+  'nav.caregiver.activity': 'Activity',
+
+  // Honesty banner: shown whenever mock reader data is displayed
+  'demo.banner': 'Demo data - AI not connected yet',
+};
+
+export default en;
+
+#### FILE: src/i18n/index.js
+import en from './en';
+
+// To add Hindi/Punjabi later: create hi.js / pa.js with the same keys,
+// register them below, and wrap the app in a LocaleProvider that re-renders
+// on setLocale. Components do not need to change.
+const dictionaries = { en };
+
+let currentLocale = 'en';
+
+export function getLocale() {
+  return currentLocale;
+}
+
+export function setLocale(locale) {
+  if (dictionaries[locale]) {
+    currentLocale = locale;
+  }
+}
+
+export function t(key, vars) {
+  const dictionary = dictionaries[currentLocale] || en;
+  let text = dictionary[key] ?? en[key];
+
+  if (text === undefined) {
+    if (import.meta.env.DEV) {
+      console.warn(`[i18n] Missing translation key: ${key}`);
+    }
+    return key;
+  }
+
+  if (vars) {
+    text = text.replace(/\{(\w+)\}/g, (match, name) =>
+      Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : match,
+    );
+  }
+
+  return text;
+}
+
+#### FILE: src/utils/status.js
+export const DOSE_STATUS = {
+  PENDING: 'pending',
+  TAKEN: 'taken',
+  SNOOZED: 'snoozed',
+  MISSED: 'missed', // always displayed as "Not confirmed"
+  SKIPPED: 'skipped',
+};
+
+// icon + label together so status is never conveyed by color alone
+export const STATUS_META = {
+  pending: { icon: 'clock', labelKey: 'status.pending' },
+  taken: { icon: 'check', labelKey: 'status.taken' },
+  snoozed: { icon: 'moon', labelKey: 'status.snoozed' },
+  missed: { icon: 'help', labelKey: 'status.missed' },
+  skipped: { icon: 'skip', labelKey: 'status.skipped' },
+};
+
+export const ALLOWED_TRANSITIONS = {
+  pending: ['taken', 'snoozed', 'skipped', 'missed'],
+  snoozed: ['taken', 'snoozed', 'skipped', 'missed'],
+  missed: ['taken'], // can still be confirmed late, which resolves the alert
+  taken: [],
+  skipped: ['taken'], // correction of a mistaken skip
+};
+
+export function normalizeStatus(status) {
+  return STATUS_META[status] ? status : 'pending';
+}
+
+export function getStatusMeta(status) {
+  return STATUS_META[normalizeStatus(status)];
+}
+
+export function canTransition(from, to) {
+  return (ALLOWED_TRANSITIONS[from] || []).includes(to);
+}
+
+export function isResolved(status) {
+  return status === 'taken' || status === 'skipped';
+}
+
+#### FILE: src/components/Icon.jsx
+const ICONS = {
+  check: <path d="M20 6 9 17l-5-5" />,
+  checkCircle: (
+    <>
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </>
+  ),
+  moon: <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />,
+  skip: (
+    <>
+      <polygon points="5 4 15 12 5 20 5 4" />
+      <line x1="19" y1="5" x2="19" y2="19" />
+    </>
+  ),
+  help: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </>
+  ),
+  alert: (
+    <>
+      <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+      <line x1="12" y1="9" x2="12" y2="13" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </>
+  ),
+  info: (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="16" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12.01" y2="8" />
+    </>
+  ),
+  bell: (
+    <>
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+    </>
+  ),
+  home: (
+    <>
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
+    </>
+  ),
+  camera: (
+    <>
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+      <circle cx="12" cy="13" r="4" />
+    </>
+  ),
+  pill: (
+    <>
+      <path d="M10.5 20.5a4.95 4.95 0 0 1-7-7l10-10a4.95 4.95 0 0 1 7 7z" />
+      <path d="M8.5 8.5l7 7" />
+    </>
+  ),
+  users: (
+    <>
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </>
+  ),
+  user: (
+    <>
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </>
+  ),
+  phone: (
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+  ),
+  logout: (
+    <>
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" y1="12" x2="9" y2="12" />
+    </>
+  ),
+  upload: (
+    <>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="17 8 12 3 7 8" />
+      <line x1="12" y1="3" x2="12" y2="15" />
+    </>
+  ),
+  edit: (
+    <>
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4z" />
+    </>
+  ),
+  trash: (
+    <>
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+      <path d="M10 11v6" />
+      <path d="M14 11v6" />
+      <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+    </>
+  ),
+  close: (
+    <>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </>
+  ),
+  plus: (
+    <>
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </>
+  ),
+  activity: <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />,
+  refresh: (
+    <>
+      <polyline points="23 4 23 10 17 10" />
+      <polyline points="1 20 1 14 7 14" />
+      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+    </>
+  ),
+  chart: (
+    <>
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="14" />
+    </>
+  ),
+  settings: (
+    <>
+      <line x1="4" y1="21" x2="4" y2="14" />
+      <line x1="4" y1="10" x2="4" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12" y2="3" />
+      <line x1="20" y1="21" x2="20" y2="16" />
+      <line x1="20" y1="12" x2="20" y2="3" />
+      <line x1="1" y1="14" x2="7" y2="14" />
+      <line x1="9" y1="8" x2="15" y2="8" />
+      <line x1="17" y1="16" x2="23" y2="16" />
+    </>
+  ),
+  heart: (
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  ),
+  shield: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />,
+  eye: (
+    <>
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
+  eyeOff: (
+    <>
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+      <line x1="1" y1="1" x2="23" y2="23" />
+    </>
+  ),
+};
+
+export default function Icon({ name, size = 24, className = '', title }) {
+  const content = ICONS[name];
+  if (!content) return null;
+
+  return (
+    <svg
+      className={`icon ${className}`.trim()}
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      focusable="false"
+      role={title ? 'img' : undefined}
+      aria-hidden={title ? undefined : 'true'}
+    >
+      {title ? <title>{title}</title> : null}
+      {content}
+    </svg>
+  );
+}
+
+#### FILE: src/components/Spinner.jsx
+import { t } from '../i18n';
+
+export default function Spinner({
+  size = 32,
+  label,
+  showLabel = false,
+  decorative = false,
+  className = '',
+}) {
+  const text = label ?? t('common.loading');
+
+  return (
+    <span
+      className={`spinner ${className}`.trim()}
+      role={decorative ? undefined : 'status'}
+      aria-hidden={decorative ? 'true' : undefined}
+    >
+      <svg
+        className="spinner__svg"
+        width={size}
+        height={size}
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
+        <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      </svg>
+      {!decorative && (
+        <span className={showLabel ? 'spinner__label' : 'visually-hidden'}>{text}</span>
+      )}
+    </span>
+  );
+}
+
+#### FILE: src/components/Button.jsx
+import { Link } from 'react-router-dom';
+import Icon from './Icon';
+import Spinner from './Spinner';
+
+/**
+ * variant: primary | secondary | success | danger | ghost
+ * size: md (56px min) | lg (72px min, for main dose actions)
+ * Pass `to` for in-app navigation or `href` for external/tel: links.
+ */
+export default function Button({
+  variant = 'primary',
+  size = 'md',
+  icon,
+  loading = false,
+  fullWidth = false,
+  disabled = false,
+  type = 'button',
+  to,
+  href,
+  className = '',
+  children,
+  ...rest
+}) {
+  const classes = [
+    'btn',
+    `btn--${variant}`,
+    `btn--${size}`,
+    fullWidth && 'btn--full',
+    loading && 'btn--loading',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  const isDisabled = disabled || loading;
+  const iconSize = size === 'lg' ? 28 : 24;
+
+  const content = (
+    <>
+      {loading ? <Spinner size={iconSize - 2} decorative /> : icon ? <Icon name={icon} size={iconSize} /> : null}
+      <span className="btn__label">{children}</span>
+    </>
+  );
+
+  if (to && !isDisabled) {
+    return (
+      <Link to={to} className={classes} {...rest}>
+        {content}
+      </Link>
+    );
+  }
+
+  if (href && !isDisabled) {
+    return (
+      <a href={href} className={classes} {...rest}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      type={type}
+      className={classes}
+      disabled={isDisabled}
+      aria-busy={loading || undefined}
+      {...rest}
+    >
+      {content}
+    </button>
+  );
+}
+
+#### FILE: src/components/Card.jsx
+/**
+ * tone: default | highlight | warning
+ * headingLevel: keep the document outline correct (default h2)
+ */
+export default function Card({
+  as: Tag = 'section',
+  tone = 'default',
+  title,
+  headingLevel = 2,
+  action,
+  className = '',
+  children,
+  ...rest
+}) {
+  const Heading = `h${headingLevel}`;
+
+  return (
+    <Tag className={`card card--${tone} ${className}`.trim()} {...rest}>
+      {(title || action) && (
+        <header className="card__header">
+          {title ? <Heading className="card__title">{title}</Heading> : <span />}
+          {action}
+        </header>
+      )}
+      {children}
+    </Tag>
+  );
+}
+
+#### FILE: src/components/StatusChip.jsx
+import Icon from './Icon';
+import { t } from '../i18n';
+import { getStatusMeta, normalizeStatus } from '../utils/status';
+
+// Always renders icon + text label, never color alone.
+export default function StatusChip({ status, size = 'md', className = '' }) {
+  const key = normalizeStatus(status);
+  const meta = getStatusMeta(key);
+
+  return (
+    <span className={`chip chip--${key} chip--${size} ${className}`.trim()}>
+      <Icon name={meta.icon} size={size === 'sm' ? 16 : 20} />
+      <span>{t(meta.labelKey)}</span>
+    </span>
+  );
+}
+
+#### FILE: src/components/ProgressRing.jsx
+import { t } from '../i18n';
+
+export default function ProgressRing({
+  percent = 0,
+  size = 140,
+  strokeWidth = 14,
+  label,
+  caption,
+  ariaLabel,
+  className = '',
+}) {
+  const safe = Number.isFinite(percent) ? percent : 0;
+  const clamped = Math.max(0, Math.min(100, Math.round(safe)));
+  const radius = (size - strokeWidth) / 2;
+  const center = size / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference * (1 - clamped / 100);
+
+  return (
+    <div
+      className={`ring ${className}`.trim()}
+      style={{ width: size, height: size }}
+      role="img"
+      aria-label={ariaLabel ?? t('a11y.progress', { percent: clamped })}
+    >
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true" focusable="false">
+        <circle
+          className="ring__track"
+          cx={center}
+          cy={center}
+          r={radius}
+          fill="none"
+          strokeWidth={strokeWidth}
+        />
+        {clamped > 0 && (
+          <circle
+            className="ring__value"
+            cx={center}
+            cy={center}
+            r={radius}
+            fill="none"
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            transform={`rotate(-90 ${center} ${center})`}
+          />
+        )}
+      </svg>
+      <div className="ring__center" aria-hidden="true">
+        <span className="ring__label">{label ?? `${clamped}%`}</span>
+        {caption ? <span className="ring__caption">{caption}</span> : null}
+      </div>
+    </div>
+  );
+}
+
+#### FILE: src/components/BottomNav.jsx
+import { NavLink } from 'react-router-dom';
+import Icon from './Icon';
+import { t } from '../i18n';
+
+/**
+ * items: [{ to, icon, labelKey, end? }]
+ * hideOnDesktop: hide at >=1024px (used with Sidebar in the caregiver layout)
+ */
+export default function BottomNav({ items, hideOnDesktop = false, className = '' }) {
+  const classes = ['bottom-nav', hideOnDesktop && 'bottom-nav--mobile-only', className]
+    .filter(Boolean)
+    .join(' ');
+
+  return (
+    <nav className={classes} aria-label={t('nav.main')}>
+      <ul className="bottom-nav__list">
+        {items.map((item) => (
+          <li key={item.to} className="bottom-nav__item">
+            <NavLink
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) => `bottom-nav__link${isActive ? ' is-active' : ''}`}
+            >
+              <Icon name={item.icon} size={28} />
+              <span className="bottom-nav__label">{t(item.labelKey)}</span>
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+#### FILE: src/components/Sidebar.jsx
+import { NavLink } from 'react-router-dom';
+import Icon from './Icon';
+import { t } from '../i18n';
+
+/**
+ * Desktop-only (>=1024px) navigation. Hidden by CSS below that width.
+ * items: [{ to, icon, labelKey, end? }]
+ * header / footer: optional nodes (footer is typically user name + logout)
+ */
+export default function Sidebar({ items, header, footer }) {
+  return (
+    <div className="sidebar">
+      <div className="sidebar__header">
+        {header ?? (
+          <span className="sidebar__brand">
+            <Icon name="heart" size={28} />
+            {t('app.name')}
+          </span>
+        )}
+      </div>
+
+      <nav className="sidebar__nav" aria-label={t('nav.main')}>
+        <ul>
+          {items.map((item) => (
+            <li key={item.to}>
+              <NavLink
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) => `sidebar__link${isActive ? ' is-active' : ''}`}
+              >
+                <Icon name={item.icon} size={24} />
+                <span>{t(item.labelKey)}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {footer ? <div className="sidebar__footer">{footer}</div> : null}
+    </div>
+  );
+}
+
+#### FILE: src/components/Modal.jsx
+import { useEffect, useId, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import Icon from './Icon';
+import { t } from '../i18n';
+
+const FOCUSABLE =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/**
+ * Accessible dialog: focus moves in on open, Tab is trapped, Escape closes,
+ * focus returns to the trigger on close, background scroll is locked.
+ * dismissible=false removes the X, Escape and backdrop-click (for forced choices).
+ */
+export default function Modal({ open, title, onClose, children, footer, dismissible = true }) {
+  const titleId = useId();
+  const dialogRef = useRef(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const dialog = dialogRef.current;
+    const previouslyFocused = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const initial = dialog.querySelectorAll(FOCUSABLE);
+    (initial[0] ?? dialog).focus();
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape' && dismissible) {
+        event.stopPropagation();
+        onCloseRef.current?.();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const items = Array.from(dialog.querySelectorAll(FOCUSABLE));
+      if (items.length === 0) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey && (active === first || active === dialog)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      if (previouslyFocused && typeof previouslyFocused.focus === 'function') {
+        previouslyFocused.focus();
+      }
+    };
+  }, [open, dismissible]);
+
+  if (!open) return null;
+
+  return createPortal(
+    <div
+      className="modal-backdrop"
+      onMouseDown={(event) => {
+        if (dismissible && event.target === event.currentTarget) {
+          onCloseRef.current?.();
+        }
+      }}
+    >
+      <div
+        ref={dialogRef}
+        className="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
+      >
+        <div className="modal__header">
+          <h2 id={titleId}>{title}</h2>
+          {dismissible && (
+            <button
+              type="button"
+              className="modal__close"
+              onClick={() => onCloseRef.current?.()}
+              aria-label={t('common.close')}
+            >
+              <Icon name="close" size={28} />
+            </button>
+          )}
+        </div>
+        <div className="modal__body">{children}</div>
+        {footer ? <div className="modal__footer">{footer}</div> : null}
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+#### FILE: src/components/Banner.jsx
+import Icon from './Icon';
+import { t } from '../i18n';
+
+const ICON_BY_VARIANT = {
+  info: 'info',
+  success: 'checkCircle',
+  warning: 'alert',
+  error: 'alert',
+  demo: 'info',
+};
+
+/**
+ * variant: info | success | warning | error | demo
+ * "demo" is the dashed banner used whenever mock data is on screen.
+ */
+export default function Banner({
+  variant = 'info',
+  title,
+  children,
+  action,
+  onDismiss,
+  className = '',
+}) {
+  const role = variant === 'error' ? 'alert' : 'status';
+
+  return (
+    <div className={`banner banner--${variant} ${className}`.trim()} role={role}>
+      <Icon name={ICON_BY_VARIANT[variant] ?? 'info'} size={28} />
+      <div className="banner__body">
+        {title ? <p className="banner__title">{title}</p> : null}
+        {children ? <div className="banner__text">{children}</div> : null}
+        {action ? <div className="banner__action">{action}</div> : null}
+      </div>
+      {onDismiss && (
+        <button
+          type="button"
+          className="banner__dismiss"
+          onClick={onDismiss}
+          aria-label={t('common.dismiss')}
+        >
+          <Icon name="close" size={24} />
+        </button>
+      )}
+    </div>
+  );
+}
+
+#### FILE: src/components/FormField.jsx
+import { useId, useState } from 'react';
+import Icon from './Icon';
+import { t } from '../i18n';
+
+/**
+ * as: 'input' (default) | 'select' | 'textarea'
+ * For custom controls pass a function as children:
+ *   <FormField label="X" name="x">{({ id, describedBy, invalid }) => <input id={id} ... />}</FormField>
+ * Uses aria-required (not the native required attribute) so browser-native English
+ * validation bubbles never appear; forms validate themselves via the `error` prop.
+ */
+export default function FormField({
+  label,
+  name,
+  type = 'text',
+  as = 'input',
+  value,
+  onChange,
+  error,
+  hint,
+  required = false,
+  optional = false,
+  options = [],
+  disabled = false,
+  rows = 4,
+  children,
+  ...rest
+}) {
+  const reactId = useId();
+  const id = `${name ?? 'field'}-${reactId}`;
+  const hintId = hint ? `${id}-hint` : undefined;
+  const errorId = error ? `${id}-error` : undefined;
+  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+  const [showPassword, setShowPassword] = useState(false);
+
+  const controlProps = {
+    id,
+    name,
+    value,
+    onChange,
+    disabled,
+    className: 'field__control',
+    'aria-required': required || undefined,
+    'aria-invalid': error ? 'true' : undefined,
+    'aria-describedby': describedBy,
+    ...rest,
+  };
+
+  let control;
+  if (typeof children === 'function') {
+    control = children({ id, describedBy, invalid: Boolean(error) });
+  } else if (as === 'select') {
+    control = (
+      <select {...controlProps}>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    );
+  } else if (as === 'textarea') {
+    control = <textarea rows={rows} {...controlProps} />;
+  } else if (type === 'password') {
+    control = (
+      <div className="field__password">
+        <input type={showPassword ? 'text' : 'password'} {...controlProps} />
+        <button
+          type="button"
+          className="field__toggle"
+          onClick={() => setShowPassword((current) => !current)}
+          aria-pressed={showPassword}
+        >
+          <Icon name={showPassword ? 'eyeOff' : 'eye'} size={20} />
+          <span>{showPassword ? t('common.hidePassword') : t('common.showPassword')}</span>
+        </button>
+      </div>
+    );
+  } else {
+    control = <input type={type} {...controlProps} />;
+  }
+
+  return (
+    <div className="field">
+      <label htmlFor={id} className="field__label">
+        {label}
+        {required ? (
+          <span className="field__flag"> ({t('common.required')})</span>
+        ) : optional ? (
+          <span className="field__flag"> ({t('common.optional')})</span>
+        ) : null}
+      </label>
+      {hint ? (
+        <p id={hintId} className="field__hint">
+          {hint}
+        </p>
+      ) : null}
+      {control}
+      {error ? (
+        <p id={errorId} className="field__error" role="alert">
+          <Icon name="alert" size={20} />
+          <span>{error}</span>
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+#### FILE: src/components/EmptyState.jsx
+import Icon from './Icon';
+
+export default function EmptyState({ icon = 'info', title, description, action, className = '' }) {
+  return (
+    <div className={`empty ${className}`.trim()}>
+      <div className="empty__icon">
+        <Icon name={icon} size={40} />
+      </div>
+      <h2>{title}</h2>
+      {description ? <p className="empty__desc">{description}</p> : null}
+      {action ? <div className="empty__action">{action}</div> : null}
+    </div>
+  );
+}
+
+#### FILE: src/pages/DesignPreview.jsx
+import { useState } from 'react';
+import Banner from '../components/Banner';
+import BottomNav from '../components/BottomNav';
+import Button from '../components/Button';
+import Card from '../components/Card';
+import EmptyState from '../components/EmptyState';
+import FormField from '../components/FormField';
+import Modal from '../components/Modal';
+import ProgressRing from '../components/ProgressRing';
+import Sidebar from '../components/Sidebar';
+import Spinner from '../components/Spinner';
+import StatusChip from '../components/StatusChip';
+import { t } from '../i18n';
+import { DOSE_STATUS } from '../utils/status';
+
+// TEMPORARY: hard-coded strings are fine here because this file is deleted in Stage 2.
+
+const patientNav = [
+  { to: '/', icon: 'home', labelKey: 'nav.patient.home', end: true },
+  { to: '/patient/scan', icon: 'camera', labelKey: 'nav.patient.scan' },
+  { to: '/patient/medicines', icon: 'pill', labelKey: 'nav.patient.medicines' },
+];
+
+const caregiverNav = [
+  { to: '/', icon: 'home', labelKey: 'nav.caregiver.dashboard', end: true },
+  { to: '/caregiver/alerts', icon: 'alert', labelKey: 'nav.caregiver.alerts' },
+  { to: '/caregiver/activity', icon: 'activity', labelKey: 'nav.caregiver.activity' },
+];
+
+export default function DesignPreview() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [bannerVisible, setBannerVisible] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [percent, setPercent] = useState(72);
+  const [name, setName] = useState('');
+  const [touched, setTouched] = useState(false);
+
+  function fakeLoad() {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  }
+
+  return (
+    <>
+      <Sidebar items={caregiverNav} />
+
+      <main className="has-bottom-nav has-bottom-nav--mobile-only has-sidebar">
+        <div className="page stack" style={{ '--stack-gap': 'var(--space-6)' }}>
+          <h1>CareLoop design system</h1>
+
+          <Banner variant="demo">{t('demo.banner')}</Banner>
+          {bannerVisible && (
+            <Banner variant="info" title="Dismissible banner" onDismiss={() => setBannerVisible(false)}>
+              Tap the X to dismiss.
+            </Banner>
+          )}
+          <Banner variant="success" title="Success">Medicine added to your schedule.</Banner>
+          <Banner variant="warning" title="Please check">Some details need your review.</Banner>
+          <Banner variant="error" title="Could not read the photo">Try a clearer picture.</Banner>
+
+          <Card title="Status chips">
+            <div className="row">
+              {Object.values(DOSE_STATUS).map((status) => (
+                <StatusChip key={status} status={status} />
+              ))}
+            </div>
+          </Card>
+
+          <Card tone="highlight" title="Next medicine">
+            <div className="stack">
+              <p>Metformin 500 mg at 8:00 AM</p>
+              <Button variant="success" size="lg" icon="check" fullWidth>Taken</Button>
+              <Button variant="secondary" size="lg" icon="moon" fullWidth>Snooze</Button>
+              <Button variant="ghost" size="lg" icon="skip" fullWidth>Skip</Button>
+            </div>
+          </Card>
+
+          <Card title="Buttons">
+            <div className="row">
+              <Button>Primary</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="danger" icon="trash">Delete</Button>
+              <Button variant="ghost">Ghost</Button>
+              <Button disabled>Disabled</Button>
+              <Button loading={loading} onClick={fakeLoad}>Load 2s</Button>
+              <Button href="tel:+910000000000" icon="phone">Call</Button>
+            </div>
+          </Card>
+
+          <Card title="Progress ring">
+            <div className="row" style={{ '--row-gap': 'var(--space-6)' }}>
+              <ProgressRing percent={percent} caption="adherence" />
+              <FormField label="Ring value" name="ring">
+                {({ id }) => (
+                  <input
+                    id={id}
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={percent}
+                    onChange={(event) => setPercent(Number(event.target.value))}
+                  />
+                )}
+              </FormField>
+            </div>
+          </Card>
+
+          <Card title="Form fields">
+            <div className="stack">
+              <FormField
+                label="Full name"
+                name="name"
+                required
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                onBlur={() => setTouched(true)}
+                error={touched && !name.trim() ? 'Please enter your name.' : undefined}
+                hint="As it appears on your prescription."
+                autoComplete="name"
+              />
+              <FormField label="Password" name="password" type="password" required autoComplete="new-password" />
+              <FormField
+                label="Frequency"
+                name="frequency"
+                as="select"
+                options={[
+                  { value: 'once', label: 'Once a day' },
+                  { value: 'twice', label: 'Twice a day' },
+                ]}
+              />
+              <FormField label="Notes" name="notes" as="textarea" optional />
+            </div>
+          </Card>
+
+          <Card tone="warning" title="Warning card">
+            <p>Check this medicine name before adding it.</p>
+          </Card>
+
+          <Card title="Empty state and spinner">
+            <EmptyState
+              icon="pill"
+              title="No medicines yet"
+              description="Scan a prescription to get started."
+              action={<Button icon="camera">Scan prescription</Button>}
+            />
+            <Spinner showLabel />
+          </Card>
+
+          <Button variant="secondary" onClick={() => setModalOpen(true)}>Open modal</Button>
+        </div>
+      </main>
+
+      <Modal
+        open={modalOpen}
+        title="Delete this medicine?"
+        onClose={() => setModalOpen(false)}
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setModalOpen(false)}>Cancel</Button>
+            <Button variant="danger" icon="trash" onClick={() => setModalOpen(false)}>Delete</Button>
+          </>
+        }
+      >
+        <p>This removes it from your schedule.</p>
+      </Modal>
+
+      <BottomNav items={patientNav} hideOnDesktop />
+    </>
+  );
+}
